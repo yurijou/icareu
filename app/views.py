@@ -75,7 +75,7 @@ class Register(Resource):
         db.session.add(user)
         db.session.commit()
         token = user.generate_auth_token(600)
-        return {'username': user.username, 'token': token.decode('ascii')}, 1
+        return {'username': user.username, 'token': token.decode('ascii'), 'uid':user.cid}, 1
 
     def get(self):
         r = requests.get('https://github.com/timeline.json')
@@ -97,7 +97,7 @@ class Login(Resource):
             return {'msg': 'user is not found'}
         if user.verify_password(password):
             token = user.generate_auth_token(600)
-            return {'token': token.decode('ascii')}
+            return {'token': token.decode('ascii'),'uid':user.cid}
 
 
 class Profile(Resource):
